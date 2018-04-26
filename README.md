@@ -13,7 +13,7 @@ Class IO analyse document symbols on opening a Typescript/Javascript file and ma
 
 ![ClassIO](./classio-screen.png)
 
-There are two way to quickly navigate to parent:
+There are two ways to quickly navigate to parents:
 
 1.  **Go To Definition**: Class IO also allows you to quickly navigate to the parent member by provde extra defintion to above marked members. To navigate to parent members, use Go To Definition and choose the parent member in the peak defintion popup.
 

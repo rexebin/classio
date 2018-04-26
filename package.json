@@ -3,7 +3,7 @@
   "displayName": "Class IO",
   "description":
     "Class IO shows relationships with its interfaces and parent class in a non-obstructive way. Class IO is an alternative to ClassLens.",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "publisher": "rexebin",
   "engines": {
     "vscode": "^1.22.0"
@@ -54,7 +54,7 @@
       },
       {
         "command": "classio.goToParent",
-        "title": "Classio: Go To Parent"
+        "title": "Go To Parent"
       }
     ],
     "menus": {
