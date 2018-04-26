@@ -1,0 +1,98 @@
+{
+  "name": "classio",
+  "displayName": "Class IO",
+  "description":
+    "Class IO shows relationships with its interfaces and parent class in a non-obstructive way. Class IO is an alternative to ClassLens.",
+  "version": "0.2.0",
+  "publisher": "rexebin",
+  "engines": {
+    "vscode": "^1.22.0"
+  },
+  "icon": "classio.png",
+  "repository": {
+    "url": "https://github.com/rexebin/classlens/tree/colorandshortcut"
+  },
+  "categories": ["Languages", "Other"],
+  "activationEvents": ["*"],
+  "contributes": {
+    "configuration": {
+      "title": "ClassIO",
+      "properties": {
+        "classio.overrideSymbol": {
+          "type": "string",
+          "default": "o ",
+          "description":
+            "The symbol will be attached to before override member."
+        },
+        "classio.overrideSymbolColor": {
+          "type": "string",
+          "default": "rgba(128,128,128,1)",
+          "description": "The color of attached override symbol."
+        },
+        "classio.implmentationSymbol": {
+          "type": "string",
+          "default": "i ",
+          "description":
+            "The symbol will be attached to before interface implementation members."
+        },
+        "classio.implmentationSymbolColor": {
+          "type": "string",
+          "default": "rgba(128,128,128,1)",
+          "description": "The color of attached implmentation symbol."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "classio.cleanCache",
+        "title": "Classio: Clean Cache"
+      },
+      {
+        "command": "classio.goToParent",
+        "title": "Classio: Go To Parent"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "classio.goToParent",
+          "group": "navigation",
+          "when": "editorLangId=='typescript'"
+        },
+        {
+          "command": "classio.goToParent",
+          "group": "navigation",
+          "when": "editorLangId=='javascript'"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "classio.goToParent",
+        "key": "shift+alt+g",
+        "when": "editorLangId=='javascript'"
+      },
+      {
+        "command": "classio.goToParent",
+        "key": "shift+alt+g",
+        "when": "editorLangId=='typescript'"
+      }
+    ]
+  },
+  "keywords": ["typescript", "class", "interface", "hierarchy", "inheritance"],
+  "main": "./out/extension",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "npm run compile && node ./node_modules/vscode/bin/test"
+  },
+  "devDependencies": {
+    "typescript": "^2.6.1",
+    "vscode": "^1.1.6",
+    "tslint": "^5.8.0",
+    "@types/node": "^7.0.43",
+    "@types/mocha": "^2.2.42"
+  }
+}
