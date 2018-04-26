@@ -10,12 +10,12 @@ export class Config {
   static overrideSymbolColor = workspace
     .getConfiguration("classio")
     .get<string>("overrideSymbolColor");
-  static implmentationSymbol = workspace
+  static implementationSymbol = workspace
     .getConfiguration("classio")
-    .get<string>("implmentationSymbol");
-  static implmentationSymbolColor = workspace
+    .get<string>("implementationSymbol");
+  static implementationSymbolColor = workspace
     .getConfiguration("classio")
-    .get<string>("implmentationSymbolColor");
+    .get<string>("implementationSymbolColor");
   static isDebug = workspace
     .getConfiguration("classio")
     .get<boolean>("debugMode");
@@ -29,8 +29,8 @@ export class Config {
 
   static interfaceDecorationType = window.createTextEditorDecorationType({
     before: {
-      contentText: Config.implmentationSymbol,
-      color: Config.implmentationSymbolColor
+      contentText: Config.implementationSymbol,
+      color: Config.implementationSymbolColor
     }
   });
 
@@ -48,12 +48,12 @@ export const updateConfig = () => {
   Config.overrideSymbolColor = workspace
     .getConfiguration("classio")
     .get<string>("overrideSymbolColor");
-  Config.implmentationSymbol = workspace
+  Config.implementationSymbol = workspace
     .getConfiguration("classio")
-    .get<string>("implmentationSymbol");
-  Config.implmentationSymbolColor = workspace
+    .get<string>("implementationSymbol");
+  Config.implementationSymbolColor = workspace
     .getConfiguration("classio")
-    .get<string>("implmentationSymbolColor");
+    .get<string>("implementationSymbolColor");
   Config.isDebug = workspace
     .getConfiguration("classio")
     .get<boolean>("debugMode");
@@ -67,8 +67,8 @@ export const updateConfig = () => {
 
   Config.interfaceDecorationType = window.createTextEditorDecorationType({
     before: {
-      contentText: Config.implmentationSymbol,
-      color: Config.implmentationSymbolColor
+      contentText: Config.implementationSymbol,
+      color: Config.implementationSymbolColor
     }
   });
 };

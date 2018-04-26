@@ -2,8 +2,8 @@
   "name": "classio",
   "displayName": "Class IO",
   "description":
-    "Class IO shows relationships with its interfaces and parent class in a non-obstructive way. Class IO is an alternative to ClassLens.",
-  "version": "0.2.2",
+    "Class IO shows class relationships with its interfaces and parent class in a non-obstructive way. Class IO is an alternative to ClassLens.",
+  "version": "0.2.3",
   "publisher": "rexebin",
   "engines": {
     "vscode": "^1.22.0"
@@ -29,16 +29,16 @@
           "default": "rgba(128,128,128,1)",
           "description": "The color of attached override symbol."
         },
-        "classio.implmentationSymbol": {
+        "classio.implementationSymbol": {
           "type": "string",
           "default": "i ",
           "description":
             "The symbol will be attached to before interface implementation members."
         },
-        "classio.implmentationSymbolColor": {
+        "classio.implementationSymbolColor": {
           "type": "string",
           "default": "rgba(128,128,128,1)",
-          "description": "The color of attached implmentation symbol."
+          "description": "The color of attached implementation symbol."
         },
         "classio.debugMode": {
           "type": "boolean",
