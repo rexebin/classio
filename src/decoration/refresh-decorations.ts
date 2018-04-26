@@ -46,8 +46,7 @@ export async function refreshDecorations(activeEditor?: TextEditor) {
     );
     log("unique classes:");
     log(uniqueClasses);
-    log("class parents:");
-    log(classParents);
+
     uniqueClasses.forEach(className => {
       const classSymbol = symbols.find(s => s.name === className);
       if (!classSymbol) {
@@ -69,6 +68,8 @@ export async function refreshDecorations(activeEditor?: TextEditor) {
         classParents[className] = interfaceSymbols;
       }
     });
+    log("class parents:");
+    log(classParents);
     let decorations: DecorationOptionsForParents = {
       class: [],
       interface: []

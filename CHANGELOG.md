@@ -1,5 +1,9 @@
 # Change Log
 
+# 0.2.4
+
+Performance improved.
+
 # 0.2.0
 
 Performance improved.

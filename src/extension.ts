@@ -37,11 +37,6 @@ export function activate(context: ExtensionContext) {
 
       await updateDecorations(window.activeTextEditor);
     }),
-    window.onDidChangeActiveTextEditor(async editor => {
-      log("onDidChangeActiveTextEditor event fired");
-
-      await updateDecorations(editor);
-    }),
     workspace.onDidChangeTextDocument(async event => {
       log("onDidChangeTextDocument event fired");
 
@@ -84,8 +79,8 @@ async function updateDecorations(editor?: TextEditor) {
     return;
   }
   if (Config.timer) {
-    log("clear timeout: stop previous unfullfilled request.");
+    log("clear timeout: stop previous unfulfilled request.");
     clearTimeout(Config.timer);
   }
-  Config.timer = setTimeout(await refreshDecorations, 500, editor);
+  Config.timer = setTimeout(await refreshDecorations, 10, editor);
 }
