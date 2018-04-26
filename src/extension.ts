@@ -35,12 +35,16 @@ export function activate(context: ExtensionContext) {
     workspace.onDidOpenTextDocument(async doc => {
       log("onDidOpenTextDocument event fired");
 
-      await updateDecorations(window.activeTextEditor);
+      await updateDecorations(10, window.activeTextEditor);
     }),
     workspace.onDidChangeTextDocument(async event => {
       log("onDidChangeTextDocument event fired");
 
-      await updateDecorations(window.activeTextEditor);
+      await updateDecorations(500, window.activeTextEditor);
+    }),
+    window.onDidChangeActiveTextEditor(async editor => {
+      log("onDidChangeActiveTextEditor event fired");
+      await updateDecorations(10, editor);
     }),
     languages.registerDefinitionProvider(
       supportedDocument,
@@ -74,7 +78,7 @@ export function saveCache() {
   workspaceState.update("classio", Config.classIOCache);
 }
 
-async function updateDecorations(editor?: TextEditor) {
+async function updateDecorations(wait: number, editor?: TextEditor) {
   if (!editor) {
     return;
   }
@@ -82,5 +86,5 @@ async function updateDecorations(editor?: TextEditor) {
     log("clear timeout: stop previous unfulfilled request.");
     clearTimeout(Config.timer);
   }
-  Config.timer = setTimeout(await refreshDecorations, 10, editor);
+  Config.timer = setTimeout(await refreshDecorations, wait, editor);
 }
