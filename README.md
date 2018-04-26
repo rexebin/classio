@@ -1,6 +1,6 @@
 # Class IO
 
-![ClassIO](https://github.com/rexebin/classlens/raw/colorandshortcut/classio.gif)
+![ClassIO](./classio.gif)
 
 Class IO is an alternative extension to ClassLens, it shows relationships with its interfaces and parent class in a non-obstructive way.
 
@@ -11,7 +11,7 @@ Class IO analyse document symbols on opening a Typescript/Javascript file and ma
 1.  any class member that is an implemtations of the class's interfaces.
 2.  any class member that overides base class' member.
 
-![ClassIO](https://github.com/rexebin/classlens/raw/colorandshortcut/classio-screen.png)
+![ClassIO](./classio-screen.png)
 
 There are two way to quickly navigate to parent:
 
@@ -27,9 +27,11 @@ Caches will be saved to workspace state and each time you open vscode, Class IO 
 
 # Cache
 
-To clean workspace cache:
+To clear workspace cache:
 
-CTRL/CMD + P: then search for "Class IO: Clean Cache".
+CTRL/CMD + P: then search for "Class IO: Clear Cache".
+
+Note: Reset cache when Class IO is updated and it is not fully working on files opened before.
 
 # Configuration
 
@@ -51,6 +53,6 @@ Change the markup symbols and color with the following configuration:
 
 # Links
 
-[Github Repository](https://github.com/rexebin/classlens/tree/colorandshortcut)
+[Github Repository](https://github.com/rexebin/classio)
 
 [Install ClassLens from VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=rexebin.classio)

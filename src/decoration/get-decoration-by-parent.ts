@@ -2,7 +2,8 @@ import { SymbolInformation, SymbolKind, Uri } from "vscode";
 import {
   convertToCachedSymbols,
   getDefinitionLocation,
-  getSymbolsByUri
+  getSymbolsByUri,
+  log
 } from "../commands";
 import { saveCache } from "../extension";
 import { DecorationOptionsForParents } from "../models/decoration-options";
@@ -33,6 +34,8 @@ export async function getDecorationByParent(
         s => s.name === parentSymbolInCurrentUri.name
       );
       if (parent) {
+        log("parent is in current file");
+        log(parent);
         return generateDeorations(
           targetSymbols,
           parentSymbolInCurrentUri,
@@ -59,6 +62,8 @@ export async function getDecorationByParent(
         parentSymbolInCurrentUri.name
       ] = targetSymbolNames;
       saveCache();
+      log("generate codelens from cache");
+      log(Config.classIOCache);
       return generateDeorations(
         targetSymbols,
         parentSymbolInCurrentUri,
@@ -72,14 +77,14 @@ export async function getDecorationByParent(
       currentUri,
       parentSymbolInCurrentUri.location.range.start
     );
-
+    log("get definition for parent:");
     if (!location) {
       return {
         class: [],
         interface: []
       };
     }
-
+    log(location);
     // check if the parent class/interface's symbols are already in cache,
     // maybe loaded by other files before.
     cache = Config.classIOCache.find(
@@ -89,12 +94,15 @@ export async function getDecorationByParent(
     // if found, then check if the cache already added
     // current file name, if not, add the current file name and parent symbol name.
     if (cache) {
+      log("found symbols of parents in cache:");
       cache.childFileNames[currentFileName] = currentFileName;
       cache.parentNamesAndChildren[
         parentSymbolInCurrentUri.name
       ] = targetSymbolNames;
 
       saveCache();
+      log(Config.classIOCache);
+
       return generateDeorations(
         targetSymbols,
         parentSymbolInCurrentUri,
@@ -104,6 +112,8 @@ export async function getDecorationByParent(
     // if we are here, then it is the first time we get symbols from parent uri.
     const symbolsRemote = await getSymbolsByUri(location.uri);
     // save to cache if cache doesnt have parent symbols.
+    log("request symbols for parent:");
+
     if (
       !Config.classIOCache.find(s => s.parentUriFspath === location.uri.fsPath)
     ) {
@@ -116,6 +126,7 @@ export async function getDecorationByParent(
         parentSymbols: convertToCachedSymbols(symbolsRemote)
       });
       saveCache();
+      log(Config.classIOCache);
     }
     return generateDeorations(
       targetSymbols,

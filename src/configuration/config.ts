@@ -16,7 +16,9 @@ export class Config {
   static implmentationSymbolColor = workspace
     .getConfiguration("classio")
     .get<string>("implmentationSymbolColor");
-
+  static isDebug = workspace
+    .getConfiguration("classio")
+    .get<boolean>("debugMode");
   static overrideDecorationType = window.createTextEditorDecorationType({
     // color: "#10ADBA",
     before: {
@@ -52,6 +54,9 @@ export const updateConfig = () => {
   Config.implmentationSymbolColor = workspace
     .getConfiguration("classio")
     .get<string>("implmentationSymbolColor");
+  Config.isDebug = workspace
+    .getConfiguration("classio")
+    .get<boolean>("debugMode");
   Config.overrideDecorationType = window.createTextEditorDecorationType({
     // color: "#10ADBA",
     before: {

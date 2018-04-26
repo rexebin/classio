@@ -14,6 +14,7 @@ import { Config, supportedDocument, updateConfig } from "./configuration";
 import { refreshDecorations } from "./decoration";
 import { ClassIOCache } from "./models";
 import { ClassIODefinitionProvider } from "./provider";
+import { log } from "./commands";
 
 let workspaceState: Memento;
 // this method is called when your extension is activated
@@ -26,16 +27,24 @@ export function activate(context: ExtensionContext) {
   Config.classIOCache = workspaceState.get<ClassIOCache[]>("classio", []);
   context.subscriptions.push(
     commands.registerCommand("classio.cleanCache", () => {
+      log("clear cache");
+
       Config.classIOCache = [];
       saveCache();
     }),
     workspace.onDidOpenTextDocument(async doc => {
+      log("onDidOpenTextDocument event fired");
+
       await updateDecorations(window.activeTextEditor);
     }),
     window.onDidChangeActiveTextEditor(async editor => {
+      log("onDidChangeActiveTextEditor event fired");
+
       await updateDecorations(editor);
     }),
     workspace.onDidChangeTextDocument(async event => {
+      log("onDidChangeTextDocument event fired");
+
       await updateDecorations(window.activeTextEditor);
     }),
     languages.registerDefinitionProvider(
@@ -47,6 +56,7 @@ export function activate(context: ExtensionContext) {
 
     workspace.onDidChangeConfiguration(updateConfig),
     workspace.onDidSaveTextDocument(doc => {
+      log("on save update cache");
       const cache = Config.classIOCache.filter(
         s => s.parentUriFspath === doc.fileName
       );
@@ -56,6 +66,7 @@ export function activate(context: ExtensionContext) {
           Config.classIOCache.splice(index, 1);
         });
         saveCache();
+        log(Config.classIOCache);
       }
     })
   );
@@ -73,6 +84,7 @@ async function updateDecorations(editor?: TextEditor) {
     return;
   }
   if (Config.timer) {
+    log("clear timeout: stop previous unfullfilled request.");
     clearTimeout(Config.timer);
   }
   Config.timer = setTimeout(await refreshDecorations, 500, editor);

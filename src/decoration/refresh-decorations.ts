@@ -6,7 +6,8 @@ import {
   getSymbolsOpenedUri,
   hasParents,
   interfaceRegex,
-  mergeDecorations
+  mergeDecorations,
+  log
 } from "../commands";
 import { ClassParents } from "../models";
 import { DecorationOptionsForParents } from "../models/decoration-options";
@@ -17,6 +18,7 @@ export async function refreshDecorations(activeEditor?: TextEditor) {
     if (!activeEditor) {
       return;
     }
+    log("refresh start:");
     const document: TextDocument = activeEditor.document;
     const text = document.getText();
     if (
@@ -28,6 +30,8 @@ export async function refreshDecorations(activeEditor?: TextEditor) {
     }
 
     const symbols = await getSymbolsOpenedUri(document.uri);
+    log("get symbols of current file");
+
     // if there is no symbols in the current document, return;
     if (symbols.length === 0) {
       clearDecoration(activeEditor);
@@ -40,7 +44,10 @@ export async function refreshDecorations(activeEditor?: TextEditor) {
         symbols.filter(s => s.containerName !== "").map(s => s.containerName)
       )
     );
-
+    log("unique classes:");
+    log(uniqueClasses);
+    log("class parents:");
+    log(classParents);
     uniqueClasses.forEach(className => {
       const classSymbol = symbols.find(s => s.name === className);
       if (!classSymbol) {
@@ -75,6 +82,8 @@ export async function refreshDecorations(activeEditor?: TextEditor) {
         ]);
       }
     }
+    log("complete, decorations:");
+    log(decorations);
     decorateEditor(decorations, activeEditor);
   } catch (error) {
     throw error;

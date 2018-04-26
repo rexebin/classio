@@ -1,6 +1,7 @@
 import { Position, Range, SymbolInformation, window } from "vscode";
 import { CachedSymbol } from "../models";
 import { DecorationOptionsForParents } from "../models/decoration-options";
+import { log } from "../commands";
 
 export function generateDeorations(
   targetSymbols: SymbolInformation[],
@@ -61,6 +62,7 @@ export function generateDeorations(
       decorationOptionsForParent["interface"].push(decoration);
     }
   });
-
+  log("from generateDeorations:");
+  log(decorationOptionsForParent);
   return decorationOptionsForParent;
 }
