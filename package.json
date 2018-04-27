@@ -3,7 +3,7 @@
   "displayName": "Class IO",
   "description":
     "Class IO shows class relationships with its interfaces and parent class in a non-obstructive way. Class IO is an alternative to ClassLens.",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "publisher": "rexebin",
   "engines": {
     "vscode": "^1.22.0"
@@ -44,6 +44,12 @@
           "type": "boolean",
           "default": false,
           "description": "Debug mode."
+        },
+        "classio.timeOut": {
+          "type": "number",
+          "default": 500,
+          "description":
+            "How long the user should idle for before Class IO start updating."
         }
       }
     },
@@ -94,10 +100,11 @@
     "test": "npm run compile && node ./node_modules/vscode/bin/test"
   },
   "devDependencies": {
-    "typescript": "^2.6.1",
-    "vscode": "^1.1.6",
-    "tslint": "^5.8.0",
+    "@types/mocha": "^2.2.48",
     "@types/node": "^7.0.43",
-    "@types/mocha": "^2.2.42"
-  }
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.1",
+    "vscode": "^1.1.6"
+  },
+  "dependencies": {}
 }

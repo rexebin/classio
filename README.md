@@ -37,6 +37,9 @@ Change the mark up symbols and color with the following configuration:
 
   // The color of attached override symbol.
   "classio.overrideSymbolColor": "rgba(128,128,128,1)"
+
+ // How long the user should idle for before Class IO start updating.
+  "classio.timeOut": 500
 ```
 
 ## Performance

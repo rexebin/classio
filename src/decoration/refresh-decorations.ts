@@ -25,8 +25,9 @@ export async function refreshDecorations(activeEditor?: TextEditor) {
       !hasParents(text, baseClassRegex) &&
       !hasParents(text, interfaceRegex)
     ) {
+      log("no parent found");
       clearDecoration(activeEditor);
-      return {};
+      return;
     }
 
     const symbols = await getSymbolsOpenedUri(document.uri);
@@ -34,6 +35,7 @@ export async function refreshDecorations(activeEditor?: TextEditor) {
 
     // if there is no symbols in the current document, return;
     if (symbols.length === 0) {
+      log("no symbol found");
       clearDecoration(activeEditor);
       return;
     }

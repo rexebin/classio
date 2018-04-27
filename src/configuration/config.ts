@@ -19,6 +19,10 @@ export class Config {
   static isDebug = workspace
     .getConfiguration("classio")
     .get<boolean>("debugMode");
+
+  static typeTimeOut = workspace
+    .getConfiguration("classio")
+    .get<number>("timeOut");
   static overrideDecorationType = window.createTextEditorDecorationType({
     // color: "#10ADBA",
     before: {
@@ -57,6 +61,9 @@ export const updateConfig = () => {
   Config.isDebug = workspace
     .getConfiguration("classio")
     .get<boolean>("debugMode");
+  Config.typeTimeOut = workspace
+    .getConfiguration("classio")
+    .get<number>("timeOut");
   Config.overrideDecorationType = window.createTextEditorDecorationType({
     // color: "#10ADBA",
     before: {

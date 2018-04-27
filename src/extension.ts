@@ -28,23 +28,22 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(
     commands.registerCommand("classio.cleanCache", () => {
       log("clear cache");
-
       Config.classIOCache = [];
       saveCache();
     }),
-    workspace.onDidOpenTextDocument(async doc => {
+    workspace.onDidOpenTextDocument(doc => {
       log("onDidOpenTextDocument event fired");
-
-      await updateDecorations(10, window.activeTextEditor);
+      updateDecorations(1, window.activeTextEditor);
     }),
-    workspace.onDidChangeTextDocument(async event => {
+    workspace.onDidChangeTextDocument(event => {
       log("onDidChangeTextDocument event fired");
-
-      await updateDecorations(500, window.activeTextEditor);
+      log("timeout:" + Config.typeTimeOut);
+      updateDecorations(Config.typeTimeOut || 500, window.activeTextEditor);
     }),
-    window.onDidChangeActiveTextEditor(async editor => {
+    window.onDidChangeActiveTextEditor(editor => {
       log("onDidChangeActiveTextEditor event fired");
-      await updateDecorations(10, editor);
+      log("timeout:" + Config.typeTimeOut);
+      updateDecorations(Config.typeTimeOut || 500, editor);
     }),
     languages.registerDefinitionProvider(
       supportedDocument,
@@ -78,7 +77,7 @@ export function saveCache() {
   workspaceState.update("classio", Config.classIOCache);
 }
 
-async function updateDecorations(wait: number, editor?: TextEditor) {
+function updateDecorations(wait: number, editor?: TextEditor) {
   if (!editor) {
     return;
   }
@@ -86,5 +85,5 @@ async function updateDecorations(wait: number, editor?: TextEditor) {
     log("clear timeout: stop previous unfulfilled request.");
     clearTimeout(Config.timer);
   }
-  Config.timer = setTimeout(await refreshDecorations, wait, editor);
+  Config.timer = setTimeout(refreshDecorations, wait, editor);
 }

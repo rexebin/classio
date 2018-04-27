@@ -1,5 +1,13 @@
 # Change Log
 
+## 0.2.6
+
+Introduce a new configuration to allow user to adjust waiting time for typing before Class IO start updating the decorations.
+
+```
+"classio.timeOut": 500
+```
+
 ## 0.2.5
 
 Increase debounce time for typing.
