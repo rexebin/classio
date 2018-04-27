@@ -35,8 +35,8 @@ export class ClassIODefinitionProvider implements DefinitionProvider {
     cache.forEach(c => {
       const parentSymbols = c.parentSymbols.filter(s => s.name === symbolName);
       parentSymbols.forEach(symbol => {
-        const validSymbos = c.parentNamesAndChildren[symbol.containerName];
-        if (validSymbos && validSymbos.indexOf(symbolName) !== -1) {
+        const validSymbols = c.parentNamesAndChildren[symbol.containerName];
+        if (validSymbols && validSymbols.indexOf(symbolName) !== -1) {
           locations.push(
             new Location(
               Uri.file(symbol.fsPath),

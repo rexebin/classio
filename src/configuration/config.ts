@@ -39,7 +39,7 @@ export class Config {
   static timer: NodeJS.Timer;
 }
 /**
- * Will be called when vscode's configuration is changed, to refresh ClassIO config.
+ * Will be called when vscode configuration is changed, to refresh ClassIO config.
  */
 export const updateConfig = () => {
   Config.overrideSymbol = workspace

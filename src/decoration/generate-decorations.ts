@@ -3,7 +3,7 @@ import { CachedSymbol } from "../models";
 import { DecorationOptionsForParents } from "../models/decoration-options";
 import { log } from "../commands";
 
-export function generateDeorations(
+export function generateDecorations(
   targetSymbols: SymbolInformation[],
   parentSymbol: SymbolInformation,
   symbolsOfParent: CachedSymbol[]
@@ -62,7 +62,7 @@ export function generateDeorations(
       decorationOptionsForParent["interface"].push(decoration);
     }
   });
-  log("from generateDeorations:");
+  log("from generateDecorations:");
   log(decorationOptionsForParent);
   return decorationOptionsForParent;
 }

@@ -7,7 +7,7 @@ import {
 } from "../commands";
 import { saveCache } from "../extension";
 import { DecorationOptionsForParents } from "../models/decoration-options";
-import { generateDeorations } from "./generate-decorations";
+import { generateDecorations } from "./generate-decorations";
 import { Config } from "../configuration";
 export async function getDecorationByParent(
   parentSymbolInCurrentUri: SymbolInformation,
@@ -36,7 +36,7 @@ export async function getDecorationByParent(
       if (parent) {
         log("parent is in current file");
         log(parent);
-        return generateDeorations(
+        return generateDecorations(
           targetSymbols,
           parentSymbolInCurrentUri,
           convertToCachedSymbols([...parentSymbolsInCurrentUri, parent])
@@ -64,7 +64,7 @@ export async function getDecorationByParent(
       saveCache();
       log("generate codelens from cache");
       log(Config.classIOCache);
-      return generateDeorations(
+      return generateDecorations(
         targetSymbols,
         parentSymbolInCurrentUri,
         cache.parentSymbols
@@ -72,7 +72,7 @@ export async function getDecorationByParent(
     }
 
     //if we are here, then the parent symbol is not in the current file and not in cache.
-    // excuete definition provider to look for the parent file.
+    // execute definition provider to look for the parent file.
     const location = await getDefinitionLocation(
       currentUri,
       parentSymbolInCurrentUri.location.range.start
@@ -103,7 +103,7 @@ export async function getDecorationByParent(
       saveCache();
       log(Config.classIOCache);
 
-      return generateDeorations(
+      return generateDecorations(
         targetSymbols,
         parentSymbolInCurrentUri,
         cache.parentSymbols
@@ -111,7 +111,7 @@ export async function getDecorationByParent(
     }
     // if we are here, then it is the first time we get symbols from parent uri.
     const symbolsRemote = await getSymbolsByUri(location.uri);
-    // save to cache if cache doesnt have parent symbols.
+    // save to cache if cache doesn't have parent symbols.
     log("request symbols for parent:");
 
     if (
@@ -128,7 +128,7 @@ export async function getDecorationByParent(
       saveCache();
       log(Config.classIOCache);
     }
-    return generateDeorations(
+    return generateDecorations(
       targetSymbols,
       parentSymbolInCurrentUri,
       convertToCachedSymbols(symbolsRemote)
