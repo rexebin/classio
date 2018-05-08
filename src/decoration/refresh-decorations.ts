@@ -7,7 +7,8 @@ import {
   hasParents,
   interfaceRegex,
   mergeDecorations,
-  log
+  log,
+  getSymbolsForModules
 } from "../commands";
 import { ClassParents } from "../models";
 import { DecorationOptionsForParents } from "../models/decoration-options";
@@ -30,7 +31,7 @@ export async function refreshDecorations(activeEditor?: TextEditor) {
       return;
     }
 
-    const symbols = await getSymbolsOpenedUri(document.uri);
+    let symbols = await getSymbolsOpenedUri(document.uri);
     log("get symbols of current file");
 
     // if there is no symbols in the current document, return;
@@ -39,6 +40,10 @@ export async function refreshDecorations(activeEditor?: TextEditor) {
       clearDecoration(activeEditor);
       return;
     }
+
+    const moduleSymbols = await getSymbolsForModules(document, symbols);
+    symbols = [...symbols, ...moduleSymbols];
+
     let classParents: ClassParents = {};
 
     const uniqueClasses = Array.from(

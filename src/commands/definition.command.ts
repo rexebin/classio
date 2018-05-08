@@ -28,3 +28,23 @@ export async function getDefinitionLocation(
     throw error;
   }
 }
+
+export async function getAllDefinitions(
+  uri: Uri,
+  position: Position
+): Promise<Location[]> {
+  try {
+    const locations = await commands.executeCommand<Location[]>(
+      "vscode.executeDefinitionProvider",
+      uri,
+      position
+    );
+
+    if (locations) {
+      return locations;
+    }
+    return [];
+  } catch (error) {
+    throw error;
+  }
+}

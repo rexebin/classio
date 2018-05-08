@@ -5,9 +5,11 @@ import {
   TextDocument,
   Uri,
   commands,
-  workspace
+  workspace,
+  SymbolKind,
+  Position
 } from "vscode";
-import { hasParents, baseClassRegex } from ".";
+import { hasParents, baseClassRegex, getAllDefinitions, log } from ".";
 
 /**
  *
@@ -195,4 +197,51 @@ function getClassTextFromClassName(
       classIndex + classSymbol.name.length + "class ".length
     );
   }
+}
+
+export function getNameSpacePosition(
+  doc: TextDocument,
+  moduleSymbol: SymbolInformation
+): Position {
+  const nameSpaceLineText = doc.getText(moduleSymbol.location.range);
+  const namespaceNameIndex = nameSpaceLineText.indexOf(moduleSymbol.name);
+  return new Position(
+    moduleSymbol.location.range.start.line,
+    namespaceNameIndex
+  );
+}
+
+/**
+ *
+ * @param document text document
+ * @param symbols all symbols of given text document
+ */
+export async function getSymbolsForModules(
+  document: TextDocument,
+  symbols: SymbolInformation[]
+): Promise<SymbolInformation[]> {
+  let modules = symbols.filter(s => s.kind === SymbolKind.Module);
+  let moduleSymbols: SymbolInformation[] = [];
+  for (let symbol of modules) {
+    log(symbol.location.range.start);
+    const definitions = await getAllDefinitions(
+      symbol.location.uri,
+      getNameSpacePosition(document, symbol)
+    );
+    if (definitions.length > 0) {
+      for (let def of definitions) {
+        if (def && def.uri && def.uri.fsPath !== document.uri.fsPath) {
+          const symbolsOfDef = await getSymbolsByUri(def.uri);
+          moduleSymbols = [...moduleSymbols, ...symbolsOfDef];
+        } else {
+          log("module def is current file, skip");
+        }
+      }
+    } else {
+      log("no module definitions found");
+    }
+  }
+  log("module symbols:");
+  log(moduleSymbols);
+  return moduleSymbols;
 }
