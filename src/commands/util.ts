@@ -1,6 +1,6 @@
 "use strict";
 
-import { SymbolInformation, SymbolKind } from "vscode";
+import { SymbolInformation } from "vscode";
 import { CachedSymbol, DecorationOptionsForParents } from "../models";
 export const baseClassRegex = /(class)(\s+)(\w+)(<.*>)?(\s+)(extends)/;
 export const interfaceRegex = /(implements)(\s+)/;
@@ -27,7 +27,7 @@ export function convertToCachedSymbols(
         symbol.location.range.start.character,
         symbol.name,
         symbol.containerName,
-        symbol.kind === SymbolKind.Class ? "class" : "interface"
+        symbol.kind
       )
     );
   });

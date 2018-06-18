@@ -1,4 +1,4 @@
-import { TextDocument, TextEditor } from "vscode";
+import { TextDocument, TextEditor, SymbolKind } from "vscode";
 import {
   baseClassRegex,
   getBaseClassSymbol,
@@ -6,10 +6,11 @@ import {
   getSymbolsOpenedUri,
   hasParents,
   interfaceRegex,
+  log,
   mergeDecorations,
-  log
+  getSymbolsForModules
 } from "../commands";
-import { ClassParents } from "../models";
+import { ClassParent, ClassInterfaces } from "../models";
 import { DecorationOptionsForParents } from "../models/decoration-options";
 import { clearDecoration, decorateEditor } from "./decorate-editor";
 import { getDecorationByParent } from "./get-decoration-by-parent";
@@ -30,8 +31,10 @@ export async function refreshDecorations(activeEditor?: TextEditor) {
       return;
     }
 
-    const symbols = await getSymbolsOpenedUri(document.uri);
-    log("get symbols of current file");
+    let symbols = await getSymbolsOpenedUri(document.uri);
+
+    const moduleSymbols = await getSymbolsForModules(document, symbols);
+    symbols = [...symbols, ...moduleSymbols];
 
     // if there is no symbols in the current document, return;
     if (symbols.length === 0) {
@@ -39,7 +42,10 @@ export async function refreshDecorations(activeEditor?: TextEditor) {
       clearDecoration(activeEditor);
       return;
     }
-    let classParents: ClassParents = {};
+
+    log(symbols);
+    let classParent: ClassParent = {};
+    let classInterfaces: ClassInterfaces = {};
 
     const uniqueClasses = Array.from(
       new Set(
@@ -48,40 +54,62 @@ export async function refreshDecorations(activeEditor?: TextEditor) {
     );
     log("unique classes:");
     log(uniqueClasses);
-
-    uniqueClasses.forEach(className => {
+    for (let className of uniqueClasses) {
       const classSymbol = symbols.find(s => s.name === className);
       if (!classSymbol) {
         return;
       }
-      const baseClassSymbol = getBaseClassSymbol(
+      const baseClassSymbol = await getBaseClassSymbol(
         document,
         classSymbol,
         symbols
       );
-      const interfaceSymbols = getInterfaceSymbols(
+      classInterfaces[className] = await getInterfaceSymbols(
         document,
         classSymbol,
         symbols
       );
+
       if (baseClassSymbol) {
-        classParents[className] = [baseClassSymbol, ...interfaceSymbols];
-      } else {
-        classParents[className] = interfaceSymbols;
+        classParent[className] = baseClassSymbol;
       }
-    });
-    log("class parents:");
-    log(classParents);
+    }
+    log("class parent:");
+    log(classParent);
+    log("class interfaces:");
+    log(classInterfaces);
+
     let decorations: DecorationOptionsForParents = {
       class: [],
       interface: []
     };
-    const classNames = Object.keys(classParents);
+    let classNames = Object.keys(classInterfaces);
     for (let className of classNames) {
-      for (let symbol of classParents[className]) {
+      for (let symbol of classInterfaces[className]) {
         decorations = mergeDecorations([
           decorations,
-          await getDecorationByParent(symbol, document.uri, symbols, className)
+          await getDecorationByParent(
+            symbol,
+            document.uri,
+            symbols,
+            className,
+            SymbolKind.Interface
+          )
+        ]);
+      }
+    }
+    classNames = Object.keys(classParent);
+    for (let className of classNames) {
+      if (classParent[className]) {
+        decorations = mergeDecorations([
+          decorations,
+          await getDecorationByParent(
+            classParent[className],
+            document.uri,
+            symbols,
+            className,
+            SymbolKind.Class
+          )
         ]);
       }
     }

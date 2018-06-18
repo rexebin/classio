@@ -1,12 +1,13 @@
-import { Position, Range, SymbolInformation, window } from "vscode";
+import { Position, Range, SymbolInformation, window, SymbolKind } from "vscode";
 import { CachedSymbol } from "../models";
 import { DecorationOptionsForParents } from "../models/decoration-options";
-import { log } from "../commands";
+import { log, ParentSymbol } from "../commands";
 
 export function generateDecorations(
   targetSymbols: SymbolInformation[],
-  parentSymbol: SymbolInformation,
-  symbolsOfParent: CachedSymbol[]
+  parentSymbol: ParentSymbol,
+  symbolsOfParent: CachedSymbol[],
+  symbolKind: SymbolKind
 ): DecorationOptionsForParents {
   let decorationOptionsForParent: DecorationOptionsForParents = {
     class: [],
@@ -27,14 +28,14 @@ export function generateDecorations(
     if (!parentPropertyMethodSymbol) {
       return;
     }
-    const parentSymbolInParent = symbolsOfParent.find(
-      s => s.name === parentSymbol.name
+    const parentSymbolsInParent = symbolsOfParent.filter(
+      s => s.name === parentSymbol.name && s.kind === symbolKind
     );
-    if (!parentSymbolInParent) {
+    if (parentSymbolsInParent.length === 0) {
       return;
     }
-    const kind = parentSymbolInParent.kind;
-    if (kind === "class") {
+
+    if (symbolKind === SymbolKind.Class) {
       const decoration = {
         range: new Range(
           targetSymbol.location.range.start,
@@ -47,7 +48,7 @@ export function generateDecorations(
         hoverMessage: "override " + parentPropertyMethodSymbol.containerName
       };
       decorationOptionsForParent["class"].push(decoration);
-    } else if (kind === "interface") {
+    } else if (symbolKind === SymbolKind.Interface) {
       const decoration = {
         range: new Range(
           targetSymbol.location.range.start,

@@ -3,17 +3,19 @@ import {
   convertToCachedSymbols,
   getDefinitionLocation,
   getSymbolsByUri,
-  log
+  log,
+  ParentSymbol
 } from "../commands";
 import { saveCache } from "../extension";
 import { DecorationOptionsForParents } from "../models/decoration-options";
 import { generateDecorations } from "./generate-decorations";
 import { Config } from "../configuration";
 export async function getDecorationByParent(
-  parentSymbolInCurrentUri: SymbolInformation,
+  parentSymbolInCurrentUri: ParentSymbol,
   currentUri: Uri,
   symbolsInCurrentUri: SymbolInformation[],
-  className: string
+  className: string,
+  symbolKind: SymbolKind
 ): Promise<DecorationOptionsForParents> {
   try {
     // get a list of target symbols to get codelens for, limited to a given class.
@@ -39,7 +41,8 @@ export async function getDecorationByParent(
         return generateDecorations(
           targetSymbols,
           parentSymbolInCurrentUri,
-          convertToCachedSymbols([...parentSymbolsInCurrentUri, parent])
+          convertToCachedSymbols([...parentSymbolsInCurrentUri, parent]),
+          symbolKind
         );
       }
       return {
@@ -67,7 +70,8 @@ export async function getDecorationByParent(
       return generateDecorations(
         targetSymbols,
         parentSymbolInCurrentUri,
-        cache.parentSymbols
+        cache.parentSymbols,
+        symbolKind
       );
     }
 
@@ -75,10 +79,11 @@ export async function getDecorationByParent(
     // execute definition provider to look for the parent file.
     const location = await getDefinitionLocation(
       currentUri,
-      parentSymbolInCurrentUri.location.range.start
+      parentSymbolInCurrentUri.position
     );
     log("get definition for parent:");
-    if (!location) {
+    if (!location || !location.uri) {
+      log("no definition found for parent");
       return {
         class: [],
         interface: []
@@ -106,7 +111,8 @@ export async function getDecorationByParent(
       return generateDecorations(
         targetSymbols,
         parentSymbolInCurrentUri,
-        cache.parentSymbols
+        cache.parentSymbols,
+        symbolKind
       );
     }
     // if we are here, then it is the first time we get symbols from parent uri.
@@ -131,7 +137,8 @@ export async function getDecorationByParent(
     return generateDecorations(
       targetSymbols,
       parentSymbolInCurrentUri,
-      convertToCachedSymbols(symbolsRemote)
+      convertToCachedSymbols(symbolsRemote),
+      symbolKind
     );
   } catch (error) {
     throw error;

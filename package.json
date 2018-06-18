@@ -1,9 +1,8 @@
 {
   "name": "classio",
   "displayName": "Class IO",
-  "description":
-    "Class IO shows class relationships with its interfaces and parent class in a non-obstructive way. Class IO is an alternative to ClassLens.",
-  "version": "0.2.6",
+  "description": "Class IO shows class relationships with its interfaces and parent class in a non-obstructive way. Class IO is an alternative to ClassLens.",
+  "version": "0.2.7",
   "publisher": "rexebin",
   "engines": {
     "vscode": "^1.22.0"
@@ -12,8 +11,13 @@
   "repository": {
     "url": "https://github.com/rexebin/classio"
   },
-  "categories": ["Languages", "Other"],
-  "activationEvents": ["*"],
+  "categories": [
+    "Languages",
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
   "contributes": {
     "configuration": {
       "title": "ClassIO",
@@ -21,8 +25,7 @@
         "classio.overrideSymbol": {
           "type": "string",
           "default": "o ",
-          "description":
-            "The symbol will be attached to before override member."
+          "description": "The symbol will be attached to before override member."
         },
         "classio.overrideSymbolColor": {
           "type": "string",
@@ -32,8 +35,7 @@
         "classio.implementationSymbol": {
           "type": "string",
           "default": "i ",
-          "description":
-            "The symbol will be attached to before interface implementation members."
+          "description": "The symbol will be attached to before interface implementation members."
         },
         "classio.implementationSymbolColor": {
           "type": "string",
@@ -48,8 +50,7 @@
         "classio.timeOut": {
           "type": "number",
           "default": 500,
-          "description":
-            "How long the user should idle for before Class IO start updating."
+          "description": "How long the user should idle for before Class IO start updating."
         }
       }
     },
@@ -90,7 +91,13 @@
       }
     ]
   },
-  "keywords": ["typescript", "class", "interface", "hierarchy", "inheritance"],
+  "keywords": [
+    "typescript",
+    "class",
+    "interface",
+    "hierarchy",
+    "inheritance"
+  ],
   "main": "./out/extension",
   "scripts": {
     "vscode:prepublish": "npm run compile",
