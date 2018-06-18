@@ -1,8 +1,12 @@
 # Change Log
 
-## 0.2.7
+## 0.3.1
 
 Updating to vscode 1.2.4 broke Class IO. This update fix the issues.
+
+## 0.3.0
+
+Add support to namespace.
 
 ## 0.2.6
 

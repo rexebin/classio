@@ -1,16 +1,15 @@
 "use strict";
 
 import {
+  commands,
+  Position,
   SymbolInformation,
+  SymbolKind,
   TextDocument,
   Uri,
-  commands,
-  workspace,
-  Position,
-  Range,
-  SymbolKind
+  workspace
 } from "vscode";
-import { hasParents, baseClassRegex, getAllDefinitions } from ".";
+import { baseClassRegex, getAllDefinitions, hasParents } from ".";
 import { log } from "../commands";
 import { createNamedNodeLookUp } from "./create-node-map";
 
