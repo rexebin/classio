@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.3.3
+
+Add typescript as dependency.
+
 ## 0.3.2
 
 Updating to vscode 1.2.4 broke Class IO. This update fix the issues.
