@@ -44,7 +44,23 @@ export function mergeDecorations(
   decorations.forEach(decoration => {
     Object.keys(decoration).forEach(key => {
       if (decoration[key]) {
-        result[key] = [...result[key], ...decoration[key]];
+        if (key === "interface") {
+          decoration[key].forEach(d => {
+            const existingDecoration = result[key].find(
+              r => r.range.start == d.range.start
+            );
+            if (existingDecoration) {
+              existingDecoration.hoverMessage =
+                existingDecoration.hoverMessage +
+                ", " +
+                (<string>d.hoverMessage).replace("implements ", "");
+            } else {
+              result[key] = [...result[key], d];
+            }
+          });
+        } else {
+          result[key] = [...result[key], ...decoration[key]];
+        }
       }
     });
   });

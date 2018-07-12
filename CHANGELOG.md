@@ -1,8 +1,12 @@
 # Change Log
 
+## 0.3.4
+
+Remove duplicated interface symbols when implementing multiple interfaces. Hoover message will show what interfaces are implemented.
+
 ## 0.3.3
 
-Add typescript as dependency.
+Add typescript as dependent library.
 
 ## 0.3.2
 
